@@ -1,0 +1,97 @@
+use std::time::Instant;
+fn busca_sequencial_simples(vetor: &[i32], alvo: i32) -> (Option<usize>, usize){
+
+    let mut operacoes = 0;
+    let mut resultado = None;
+
+    for i in 0..vetor.len() {
+        operacoes +=1;
+        if vetor[i] == alvo{
+            resultado = Some(i);
+        }
+    }
+    (resultado, operacoes)
+}
+
+fn busca_sequencial_interrompida(vetor: &[i32], alvo: i32) -> (Option <usize>, usize){
+    let mut operacoes = 0;
+    for i in 0..vetor.len(){
+        operacoes+= 1;
+        if vetor [i] == alvo{
+            return (Some(i), operacoes);
+        }
+    }
+    (None, operacoes)
+}
+
+fn gerar_vetor(tamanho: usize) -> Vec<i32> {
+    (1..=tamanho as i32).collect()
+}
+
+fn executar_experimento(tamanho: usize, alvo:i32){
+    let vetor = gerar_vetor(tamanho);
+
+    println!("\n{}", "=".repeat(60));
+    println!("Tamanho do vetor: {}", tamanho);
+    println!("Elemento procurado: {}", alvo);
+    println!("{}", "-".repeat(60));
+
+    let inicio = Instant:: now();
+    let (resultado1, ops1) = busca_sequencial_simples(&vetor, alvo);
+    let tempo1 = inicio.elapsed();
+
+    println!("\n BUSCA SEQUENCIAL SIMPLES:");
+    println!(" Resultado: {:?}", resultado1);
+    println!(" Operações: {}", ops1);
+    println!(" Tempo: {:?}", tempo1);
+
+    let inicio = Instant:: now();
+    let (resultado2, ops2) = busca_sequencial_interrompida(&vetor, alvo);
+    let tempo2 = inicio.elapsed();
+
+    println!("\n BUSCA SEQUENCIAL INTERROMPIDA:");
+    println!(" Resultado: {:?}", resultado2);
+    println!(" Operações: {}", ops2);
+    println!(" Tempo: {:?}", tempo2);
+
+    println!("\n ANÁLISE COMPARATIVA:");
+    println!(" Diferença de operações: {} operações", ops1.saturating_sub(ops2));
+    if tempo1 > tempo2 {
+        println!(" Algoritmo com interrupção foi mais rápido");
+    } else if tempo1 < tempo2 {
+        println!(" Algoritmo simples foi mais rápido (provavelmente devido a variação)");
+    } else {
+        print!(" Tempos praticamente iguais");
+    }
+    println!("{}", "=".repeat(60));
+
+}
+fn main() {
+    println!("\n EXPERIMENTO: comparação de algoritmos de busca\n");
+
+    //cenário 1: elemento no inicio do vetor 
+    println!("\n cenário 1: elemento no inínio (melhor caso para interrupção)");
+    executar_experimento(1_000, 5);
+    executar_experimento(100_000, 5);
+    executar_experimento(1_000__000, 5);
+
+    //cenário 2: Elemento no meio do vetor
+    println!("\n cenário 2: elemento no meio ");
+    executar_experimento(1_000, 500);
+    executar_experimento(100_000, 50_000);
+    executar_experimento(1_000__000, 500_000);
+
+    //cenário 3: Elemento no fim
+    println!("\n\n  cenário 3: Elemento no final (pior)");
+    executar_experimento(1_000, 1_000);
+    executar_experimento(100_000, 100_000);
+    executar_experimento(1_000__000, 1_000_000);
+    
+    //cenário 4: Elemento não existe
+    println!("\n\n cenário 4: Elemento não existe no vetor");
+    executar_experimento(1_000, -1);
+    executar_experimento(100_000, -1);
+    executar_experimento(1_000__000, -1);
+
+    println!("\n\n Experimento concluido!\n");
+}
