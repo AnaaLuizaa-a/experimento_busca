@@ -23,7 +23,7 @@ fn busca_sequencial_simples(vetor: &[String], alvo: &str) -> (Option<usize>, usi
     (resultado, operacoes)
 }
 
-fn busca_sequencial_interrompida(vetor: &[String], alvo: &str) -> (Option <usize>, usize){
+fn busca_sequencial_interrompida(vetor: &[String], alvo: &str) -> (Option<usize>, usize){
     let mut operacoes = 0;
     for i in 0..vetor.len(){
         operacoes+= 1;
@@ -75,18 +75,28 @@ fn executar_experimento(tamanho: usize, alvo:&str){
         print!(" Tempos praticamente iguais");
     }
     println!("{}", "=".repeat(60));
-
 }
+
+fn buscar_posicoes(vetor: &[String], alvo: &str) -> Vec<usize> {
+    let mut posicoes = Vec::new();
+    for i in 0..vetor.len() {
+        if vetor[i] == alvo {
+            posicoes.push(i);
+        }
+    }
+    posicoes
+}
+
 fn main() {
-    println!("\n EXPERIMENTO: comparação de algoritmos de busca\n");
+println!("\n EXPERIMENTO: comparação de algoritmos de busca\n");
 
     //cenário 1: elemento no inicio do vetor 
     println!("\n cenário 1: elemento no inínio (melhor caso para interrupção)");
-    let vezes = contador(&gerar_vetor(1_000_000), "5");
-    executar_experimento(1_000, "5");
-    executar_experimento(100_000, "5");
-    executar_experimento(1_000_000, "5");
-    println!("Elemento apareceu {} vezes", vezes);
+    let vezes = contador(&gerar_vetor(1_000_000), "1");
+    executar_experimento(1_000, "1");
+    executar_experimento(100_000, "1");
+    executar_experimento(1_000_000, "1");
+    println!("Elemento apareceu {} vezes, nas posições: {:?}", vezes, buscar_posicoes(&gerar_vetor(1_000_000), "1"));
 
     //cenário 2: Elemento no meio do vetor
     println!("\n cenário 2: elemento no meio ");
@@ -94,7 +104,7 @@ fn main() {
     executar_experimento(1_000, "500");
     executar_experimento(100_000, "50000");
     executar_experimento(1_000_000, "500000");
-    println!("Elemento apareceu {} vezes", vezes);
+    println!("Elemento apareceu {} vezes, nas posições: {:?}", vezes, buscar_posicoes(&gerar_vetor(1_000_000), "500000"));
 
     //cenário 3: Elemento no fim
     println!("\n\n  cenário 3: Elemento no final (pior)");
@@ -102,15 +112,15 @@ fn main() {
     executar_experimento(1_000, "1000");
     executar_experimento(100_000, "100000");
     executar_experimento(1_000_000, "1000000");
-    println!("Elemento apareceu {} vezes", vezes);
+    println!("Elemento apareceu {} vezes, nas posições: {:?}", vezes, buscar_posicoes(&gerar_vetor(1_000_000), "1000000"));
     
     //cenário 4: Elemento não existe
     println!("\n\n cenário 4: Elemento não existe no vetor");
-    let vezes = contador(&gerar_vetor(1_000_000), "nonexistent");
-    executar_experimento(1_000, "nonexistent");
-    executar_experimento(100_000, "nonexistent");
-    executar_experimento(1_000_000, "nonexistent");
-    println!("Elemento apareceu {} vezes", vezes);
+    let vezes = contador(&gerar_vetor(1_000_000), "-1");
+    executar_experimento(1_000, "-1");
+    executar_experimento(100_000, "-1");
+    executar_experimento(1_000_000, "-1");
+    println!("Elemento apareceu {} vezes, nas posições: {:?}", vezes, buscar_posicoes(&gerar_vetor(1_000_000), "-1"));
 
     println!("\n\n Experimento concluido!\n");
 }
