@@ -1,5 +1,5 @@
 use std::time::Instant;
-fn busca_sequencial_simples(vetor: &[i32], alvo: i32) -> (Option<usize>, usize){
+fn busca_sequencial_simples(vetor: &[String], alvo: &str) -> (Option<usize>, usize){
 
     let mut operacoes = 0;
     let mut resultado = None;
@@ -13,7 +13,7 @@ fn busca_sequencial_simples(vetor: &[i32], alvo: i32) -> (Option<usize>, usize){
     (resultado, operacoes)
 }
 
-fn busca_sequencial_interrompida(vetor: &[i32], alvo: i32) -> (Option <usize>, usize){
+fn busca_sequencial_interrompida(vetor: &[String], alvo: &str) -> (Option <usize>, usize){
     let mut operacoes = 0;
     for i in 0..vetor.len(){
         operacoes+= 1;
@@ -24,11 +24,11 @@ fn busca_sequencial_interrompida(vetor: &[i32], alvo: i32) -> (Option <usize>, u
     (None, operacoes)
 }
 
-fn gerar_vetor(tamanho: usize) -> Vec<i32> {
-    (1..=tamanho as i32).collect()
+fn gerar_vetor(tamanho: usize) -> Vec<String> {
+    (1..=tamanho).map(|i| i.to_string()).collect()
 }
 
-fn executar_experimento(tamanho: usize, alvo:i32){
+fn executar_experimento(tamanho: usize, alvo:&str){
     let vetor = gerar_vetor(tamanho);
 
     println!("\n{}", "=".repeat(60));
@@ -71,27 +71,27 @@ fn main() {
 
     //cenário 1: elemento no inicio do vetor 
     println!("\n cenário 1: elemento no inínio (melhor caso para interrupção)");
-    executar_experimento(1_000, 5);
-    executar_experimento(100_000, 5);
-    executar_experimento(1_000__000, 5);
+    executar_experimento(1_000, "5");
+    executar_experimento(100_000, "5");
+    executar_experimento(1_000__000, "5");
 
     //cenário 2: Elemento no meio do vetor
     println!("\n cenário 2: elemento no meio ");
-    executar_experimento(1_000, 500);
-    executar_experimento(100_000, 50_000);
-    executar_experimento(1_000__000, 500_000);
+    executar_experimento(1_000, "500");
+    executar_experimento(100_000, "50000");
+    executar_experimento(1_000__000, "500000");
 
     //cenário 3: Elemento no fim
     println!("\n\n  cenário 3: Elemento no final (pior)");
-    executar_experimento(1_000, 1_000);
-    executar_experimento(100_000, 100_000);
-    executar_experimento(1_000__000, 1_000_000);
+    executar_experimento(1_000, "1000");
+    executar_experimento(100_000, "100000");
+    executar_experimento(1_000__000, "1000000");
     
     //cenário 4: Elemento não existe
     println!("\n\n cenário 4: Elemento não existe no vetor");
-    executar_experimento(1_000, -1);
-    executar_experimento(100_000, -1);
-    executar_experimento(1_000__000, -1);
+    executar_experimento(1_000, "nonexistent");
+    executar_experimento(100_000, "nonexistent");
+    executar_experimento(1_000__000, "nonexistent");
 
     println!("\n\n Experimento concluido!\n");
 }
